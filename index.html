@@ -8,8 +8,8 @@
     .student > a > img { height: 200px; opacity: 0.4; position: absolute; left:0;}
     .student > a > span { font-size: 20px; position: absolute; left:20px; top:150px; margin:0; padding: 5px; background:#eee}
     #colors,#note { display: none; }
-    #colors > div { width: 300px; height: 300px; margin: 5px; float: left; position: relative; background-size: 300px; background-repeat: no-repeat}
-    #colors > div > span { position: absolute; bottom: 20px; right: 0px; color: white; background: #aaa; padding:15px; font-size: 36px } 
+    #colors > div { width: 200px; height: 200px; margin: 5px; float: left; position: relative; background-size: 200px; background-repeat: no-repeat; cursor:pointer}
+    #colors > div > span { position: absolute; bottom: 20px; right: 0px; color: white; background: #aaa; padding:15px; font-size: 24px } 
     #note { padding: 20px; width: 100%; height:100%; background-size: 200%; background-position: 50% 50%; }
     #note > textarea { min-width: 300px; min-height: 150px; }
     h1 { text-align: center; }
@@ -17,8 +17,8 @@
     .blue { background-image: url(/r/bluenote.png); }
     .green { background-image: url(/r/greennote.png) }
     .red { background-image: url(/r/rednote.png) }
-    .checkboxes { position: absolute; left: 20px; bottom: 20px; }
-    .save { position: absolute; right: 20px; bottom: 20px; }
+    .checkboxes { position: fixed; left: 20px; bottom: 20px; }
+    .save { position: fixed; right: 20px; bottom: 20px; }
   </style>
   <script>
     var colors = {'yellow':'Notice', 'green':'Admin', 'red': 'Behavior', 'blue': 'Performance'};

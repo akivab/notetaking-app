@@ -3,14 +3,14 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
-import simplejson as json
+import json
 import os, re, urllib, datetime, logging
 from operator import itemgetter
 
 
 CLIENT = '0XGXFUPMyq'
 SECRET = 'FvvHZUIq3vg0U3WNW1eWVm6mrwOqKAjEn75kJgiPVgCx1IIS'
-REDIRECT_URI = 'http://localhost:8080/register/'
+REDIRECT_URI = 'http://slc-app.appspot.com/register/'
 REST_HOST = 'https://api.sandbox.slcedu.org/api/rest/v1/%s'
 OAUTH_HOST = 'https://api.sandbox.slcedu.org/api/oauth/%s'
 TOKEN_ENDPOINT = OAUTH_HOST % 'token'
@@ -52,6 +52,7 @@ class MainPage(webapp2.RequestHandler):
     
     url = '%s?client_id=%s&client_secret=%s&grant_type=authorization_code&redirect_uri=%s&code=%s' % (TOKEN_ENDPOINT, CLIENT, SECRET, REDIRECT_URI, code)
     obj = self.getJson(url)
+    logging.info(str(obj)) 
     self.response.set_cookie('tk', obj['access_token'], max_age=3600, path='/')
     self.response.out.write("<script>window.location.href='/'</script>")
 
@@ -110,7 +111,8 @@ class MainPage(webapp2.RequestHandler):
     note = Note(student=student_id, teacher=self.TEACHER, note=message,color=color, visibility=str(visibility))
     note.put()
     body.append({'msg':message,'color':color,'time':str(datetime.datetime.now()),'visibility':str(visibility)})
-    self.setStudentData(student_id, body)
+    logging.info(str(self.setStudentData(student_id, body)))
+    
     self.redirect('/studentreport?id=%s' % student_id) 
     
   def getJson(self, url, data=None, method=urlfetch.GET):
@@ -158,11 +160,10 @@ class MainPage(webapp2.RequestHandler):
     return self.getJson(url, data, urlfetch.PUT)
 
   def getStudents(self):
-    sectionJson = self.getJson(REST_HOST % 'sections')
-    sections = ','.join(i['id'] for i in sectionJson)
-    url = REST_HOST % ('sections/%s/studentSectionAssociations/students' % sections)
-    students = self.getJson(url)
-    logging.info(str(students))
+    students = self.getJson(REST_HOST % 'students')
+#    sections = ','.join(i['id'] for i in sectionJson)
+ #   url = REST_HOST % ('sections/%s/studentSectionAssociations/students' % sections)
+#    students = self.getJson(url)
     return students
 
   def getAllStudents(self):
