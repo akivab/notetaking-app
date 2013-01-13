@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/r/bootstrap.min.css" />
+    <style>
+    .yellow { background-image: url(/r/yellownote.png); }
+    .blue { background-image: url(/r/bluenote.png); }
+    .green { background-image: url(/r/greennote.png) }
+    .red { background-image: url(/r/rednote.png) }
+    .note { width: 200px; float: left; height: 200px; background-position:50% 50%;}
+    .note > *{  float: left; clear: both; margin: 10px; }
+    .head { margin: auto; text-align: center; }
+    </style>
+    <script>
+      window.onload = function() {
+        var els = document.getElementsByClassName('date');
+        for (var d in els) {
+          els[d].innerHTML = toDate(els[d].innerHTML);
+        }
+      };
+      function toDate(notedate) {
+        var months = 'January,February,March,April,May,June,July,August,September,November,December'.split(',');
+        var dateparts = notedate.split(' ')[0].split('-');
+        console.log(dateparts);
+        var str = months[1*dateparts[1]-1] + " " + dateparts[2] + ", " + dateparts[0];
+        return str;
+      }
+    </script>
+  </head>
+  <body>
+  <div class='head'>
+  <h1>{{student}}</h1>
+  <h3>{{teacher}}</h3>
+  </div>
+{% for note in notes %}
+  <div class='note {{note.color}}'>
+    <b>{{note.note}}</b>
+    <span class='date'>{{note.date}}</span>
+    <span>visibility: {{note.visibility}}</span>
+  </div>
+{% endfor %}
+
+<p style='clear:both;'>{{about}}</p>
+  </body>
+</html>

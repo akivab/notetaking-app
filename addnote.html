@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>Add note</title>
+  </head>
+  <body>
+    <h1>{{student.name}}</h1>
+    {% for color in colors %}
+    <div class="notecolor" style="background-color:{{color.color}}">
+    {{color.reason}}
+    </div>
+    {% endfor %}
+  </body>
+</html>
