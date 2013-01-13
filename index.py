@@ -139,6 +139,7 @@ class MainPage(webapp2.RequestHandler):
                 if not evt['date'] in data: data[evt['date']] = []
                 data[evt['date']] += [evt['event']] 
           continue
+        if not 'letterGradeEarned' in arg: continue
         if not date in data: data[date] = []
         data[date] += [arg['letterGradeEarned']]
     toret = []
@@ -156,16 +157,19 @@ class MainPage(webapp2.RequestHandler):
     data = json.dumps({'body':json.dumps(data)})
     return self.getJson(url, data, urlfetch.PUT)
 
+  def getStudents(self):
+    sectionJson = self.getJson(REST_HOST % 'sections')
+    sections = ','.join(i['id'] for i in sectionJson)
+    url = REST_HOST % ('sections/%s/studentSectionAssociations/students' % sections)
+    students = self.getJson(url)
+    logging.info(str(students))
+    return students
+
   def getAllStudents(self):
     peeps = {}
-    students = self.getJson(REST_HOST % 'students')
-#    for i in sections:
-#      for link in i['links']:
-#        if link['rel'] == 'getStudents':
-#          students = self.getJson(link['href'])
+    students = self.getStudents() 
     for j in students:
       peeps[j['id']] = ('%s %s' % (j['name']['firstName'], j['name']['lastSurname']), j['sex'])
-#    logging.info(len(peeps))
     return [{'id':j, 'name':peeps[j][0], 'sex':peeps[j][1]} for j in peeps]
 
 application = webapp2.WSGIApplication(
